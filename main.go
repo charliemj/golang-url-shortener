@@ -48,7 +48,7 @@ func GetIndex(c *gin.Context) {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
-		c.HTML(200, "index.html") //, gin.H{"URLS": urls}) //for debugging
+		c.HTML(200, "index.html", gin.H{"title": ""}) //, gin.H{"URLS": urls}) //for debugging
 	}
 }
 
@@ -66,20 +66,43 @@ func ExpandUrl(c *gin.Context) {
 func CreateShortUrl(c *gin.Context) {
 	var longUrl string
 	longUrl = c.PostForm("longUrl")
-
-	fmt.Println(longUrl)
-	hd := hashids.NewData()
-
-	h, _ := hashids.NewWithData(hd)
-	now := time.Now()
 	var id string
 	var short string
-	id, _ = h.Encode([]int{int(now.Unix())})
+	id = MakeUniqueSlug()
 	short = "http:localhost:8080/" + id
-	fmt.Println(short)
 	var newUrl MyUrl
 	newUrl = MyUrl{LongUrl: longUrl, ShortUrl: short, ID: id}
-	fmt.Println("lolhi")
 	db.Create(&newUrl)
 	c.HTML(200, "show.html", gin.H{"short": short})
+}
+
+func MakeUniqueSlug() string {
+	var id string
+	var url MyUrl
+	var isAlreadyMade bool
+	isAlreadyMade = true
+
+	hd := hashids.NewData()
+	h, _ := hashids.NewWithData(hd)
+	//check if id is already in db and keep trying to make on until it is not
+	for isAlreadyMade {
+		now := time.Now()
+		id, _ = h.Encode([]int{int(now.Unix())})
+
+		//get all rows where the id is = the id we just made
+		rows, _ := db.Where(map[string]interface{}{"id": id}).Find(&url).Rows()
+
+		//if there are any rows with that id, we remake the id
+		count := 0
+		for rows.Next() {
+			count++
+		}
+		if count == 0 {
+
+			isAlreadyMade = false
+		} else {
+			isAlreadyMade = true
+		}
+	}
+	return id
 }

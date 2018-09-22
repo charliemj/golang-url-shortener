@@ -1,0 +1,13 @@
+package: github.com/charliemj/golang-url-shortener
+import:
+- package: github.com/gin-gonic/gin
+- package: github.com/mattn/go-sqlite3
+- package: github.com/speps/go-hashids
+testImport:
+- package: github.com/PuerkitoBio/goquery
+- package: github.com/stretchr/testify
+  subpackages:
+  - assert
+- package: golang.org/x/net
+  subpackages:
+  - html

@@ -22,10 +22,11 @@
     max-width:100%;
     font-family: 'PT Serif', serif;
     color:black;
+    background-color: #d3d3d3;
 
     }
     form {
-      margin: 100px auto;
+      margin: 200px auto;
       width:250px;
     }
   </style>
@@ -36,15 +37,15 @@
   <div class="container">
     <div class="row">
       <div class="col-sm" id="left">
-        <!-- <p>"ljkfdasljkfjlkjkldjlkfdsajlkfdsjklfdslkjfdljkfadlkdfljkfdjklkjkjfdkjldfjlkfdsjkldfsjkldfs"</p>
-        <p>{{.URLS}}</p> -->
+
       </div>
 
       <div id="middle" class="col-sm">
         <form id="myform" action="/create" method="POST" >
             <div class="form-group">
               <label for="formGroupExampleInput">Shorten a URL</label>
-              <input name="longUrl" type="text" class="form-control" id="formGroupExampleInput" placeholder="URL to shorten">
+              <br>
+              <input name="longUrl" type="text" class="form-control" id="formGroupExampleInput" placeholder="Enter Your URL">
             </div>
           <button class="btn btn-primary" type="submit">Make it short!</button>
         </form>

@@ -22,27 +22,36 @@
     max-width:100%;
     font-family: 'PT Serif', serif;
     color:black;
+    background-color: #d3d3d3;
 
     }
     p {
       margin: 100px auto;
       width:250px;
     }
+
+    #show {
+      margin:  auto;
+      padding: 50px;
+      width: 50%;
+    }
+    #url{block:inline;}
+
   </style>
 </head>
 
 <body>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-sm" id="left">
-      </div>
-      <div id="middle" class="col-sm">
-        <p>Your short url is: {{.short}}</p>
-      </div>
-      <div id="right" class="col-sm"></div>
-    </div>
+  <div id="show">
+    <h1>Your short url is: <h1 id="url">{{.short}}</h1></h1>
+
+    <br>
+    <form id="myform" action="/" method="GET" >
+      <button class="btn btn-primary" type="submit">Shorten another URL</button>
+    </form>
   </div>
+
+
 
 </body>
 </html>

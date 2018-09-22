@@ -6,6 +6,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 	"github.com/speps/go-hashids"
+	//"net/http"
 	"time"
 )
 
@@ -20,6 +21,7 @@ type MyUrl struct {
 
 func main() {
 
+	//Set up database
 	db, err = gorm.Open("sqlite3", "./gorm.db")
 	if err != nil {
 		fmt.Println(err)
@@ -33,25 +35,29 @@ func main() {
 	// db.Create(&p1)
 	// db.Create(&p2)
 
-	//Routes
+	//Routing
+	router := MakeRouter()
+	router.Run(":8080")
+}
+
+//returns a router
+func MakeRouter() *gin.Engine {
 	r := gin.Default()
 	r.GET("/", GetIndex)
 	r.LoadHTMLFiles("index.html", "show.html")
 	r.GET("/:id", ExpandUrl)
 	r.POST("/create", CreateShortUrl)
-	r.Run(":8080")
+
+	return r
 }
 
+//Handles GET request for the homepage. Returns index.html
 func GetIndex(c *gin.Context) {
-	var urls []MyUrl
-	if err := db.Find(&urls).Error; err != nil {
-		c.AbortWithStatus(404)
-		fmt.Println(err)
-	} else {
-		c.HTML(200, "index.html", gin.H{"title": ""}) //, gin.H{"URLS": urls}) //for debugging
-	}
+	c.HTML(200, "index.html", gin.H{})
 }
 
+//Handles GET requests for shortened urls. Resolves the shortened url
+//to its long url counterpart and redirects to that url.
 func ExpandUrl(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var url MyUrl
@@ -63,6 +69,7 @@ func ExpandUrl(c *gin.Context) {
 	}
 }
 
+//Handles POST request. for creating a new short url.
 func CreateShortUrl(c *gin.Context) {
 	var longUrl string
 	longUrl = c.PostForm("longUrl")
@@ -76,6 +83,8 @@ func CreateShortUrl(c *gin.Context) {
 	c.HTML(200, "show.html", gin.H{"short": short})
 }
 
+//Generates a unique id (the slug component of the url) for the
+//short urls
 func MakeUniqueSlug() string {
 	var id string
 	var url MyUrl

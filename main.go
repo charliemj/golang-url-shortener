@@ -31,7 +31,7 @@ func MakeDatabase() {
 func MakeRouter() *gin.Engine {
 	r := gin.Default()
 	r.GET("/", GetIndex)
-	r.LoadHTMLFiles("index.html", "show.html")
+	r.LoadHTMLFiles("public/index.html", "public/show.html")
 	r.GET("/:id", ExpandUrl)
 	r.POST("/create", CreateShortUrl)
 	return r

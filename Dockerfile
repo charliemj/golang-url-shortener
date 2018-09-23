@@ -10,6 +10,12 @@ RUN go install github.com/charliemj/golang-url-shortener
 # Run the golang-docker command when the container starts.
 ENTRYPOINT /go/bin/golang-url-shortener
 
+FROM nginx:alpine
+COPY default.conf /etc/nginx/conf.d/default.conf
+COPY index.html /usr/share/nginx/html/index.html
+COPY show.html /usr/share/nginx/html/show.html
+
+
 # http server listens on port 8080.
 EXPOSE 8080
 

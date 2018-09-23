@@ -1,0 +1,11 @@
+To Run
+- Start by cloning/downloading this directory
+- Install dependencies
+    - go get "github.com/gin-gonic/gin"
+    - go get "github.com/mattn/go-sqlite3"
+    - go get "github.com/speps/go-hashids"
+    - go get "github.com/PuerkitoBio/goquery"
+    - go get "github.com/stretchr/testify/assert"
+- cd into the directory
+- run `go run main.go`
+- Go to your browser localhost:8080
